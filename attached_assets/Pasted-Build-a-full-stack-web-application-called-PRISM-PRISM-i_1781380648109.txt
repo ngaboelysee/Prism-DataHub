@@ -1,0 +1,207 @@
+Build a full-stack web application called PRISM.
+
+PRISM is an AI decision intelligence system that helps users make better decisions by showing multiple AI perspectives (like a debate between different thinking styles).
+
+This is NOT a chatbot. It is a structured decision analysis engine.
+
+--------------------------------------------------
+🧠 CORE FUNCTION
+--------------------------------------------------
+
+User enters a decision or question.
+
+Example:
+"Should I start a startup or focus on university?"
+
+The system generates 4 AI perspectives:
+
+1. Contrarian → finds risks, flaws, and failure cases
+2. Expansionist → focuses on opportunities and upside
+3. Executionist → gives practical step-by-step plan
+4. Analyst → balanced logical tradeoff analysis
+
+Then the system produces:
+- structured responses per persona
+- final synthesized verdict
+- confidence score (0–100)
+
+--------------------------------------------------
+⚙️ TECH STACK
+--------------------------------------------------
+
+Use:
+- Next.js (React framework)
+- TypeScript
+- Tailwind CSS
+- Framer Motion (animations)
+- API routes (backend inside Next.js)
+- Gemini API (or OpenAI compatible API if easier)
+
+No external backend.
+
+--------------------------------------------------
+📁 REQUIRED PROJECT STRUCTURE
+--------------------------------------------------
+
+/app
+  page.tsx → landing page (input UI)
+  /dashboard/page.tsx → main PRISM workspace
+  /api/analyze/route.ts → backend AI orchestration
+
+/components
+  GlassCard.tsx
+  PersonaCard.tsx
+  VerdictPanel.tsx
+  LoadingSequence.tsx
+
+/lib
+  ai.ts → AI API calls
+  personas.ts → system prompts
+  types.ts
+
+--------------------------------------------------
+🧠 AI LOGIC (IMPORTANT)
+--------------------------------------------------
+
+When user submits a question:
+
+Call AI 4 times in parallel using Promise.all:
+- contrarian prompt
+- expansionist prompt
+- executionist prompt
+- analyst prompt
+
+Each must use a different system prompt.
+
+Return structured JSON:
+
+{
+  question: string,
+  personas: {
+    contrarian: string,
+    expansionist: string,
+    executionist: string,
+    analyst: string
+  },
+  verdict: string,
+  confidence: number
+}
+
+--------------------------------------------------
+🧩 PERSONA SYSTEM PROMPTS (/lib/personas.ts)
+--------------------------------------------------
+
+Contrarian:
+You are a critical thinker. Always challenge assumptions, highlight risks, and explain why ideas might fail.
+
+Expansionist:
+You are an optimistic strategist. Focus on opportunities, scaling, growth, and big-picture upside.
+
+Executionist:
+You are a practical builder. Give step-by-step actionable plans and implementation details.
+
+Analyst:
+You are a neutral analyst. Compare tradeoffs logically and provide balanced reasoning.
+
+IMPORTANT:
+Do NOT roleplay humans. You are simulating decision-making frameworks.
+
+--------------------------------------------------
+🎨 UI / UX DESIGN (VERY IMPORTANT)
+--------------------------------------------------
+
+STYLE: Premium glassmorphism + dark enterprise UI
+
+Background:
+- dark gradient (#070A12 base)
+
+Glass cards:
+- rgba(255,255,255,0.06)
+- border rgba(255,255,255,0.12)
+- backdrop blur medium
+- rounded-xl
+
+Each persona must have a distinct color:
+- Contrarian: red
+- Expansionist: blue
+- Executionist: green
+- Analyst: purple
+
+--------------------------------------------------
+🧭 UI FLOW
+--------------------------------------------------
+
+1. Landing Page (/)
+- centered PRISM title
+- tagline: "See every decision from every angle."
+- large input box
+- button: "Analyze Decision"
+
+2. Loading State
+Animated sequence:
+- Splitting perspectives...
+- Activating Contrarian...
+- Expanding possibilities...
+- Structuring execution plan...
+- Synthesizing verdict...
+
+3. Dashboard (/dashboard)
+
+Layout:
+
+TOP:
+- question display
+
+MIDDLE:
+- 4 persona cards (grid 2x2)
+- animated fade-in stagger using Framer Motion
+
+BOTTOM:
+- Verdict panel
+- confidence bar animation
+
+--------------------------------------------------
+🎬 ANIMATIONS (FRAMER MOTION)
+--------------------------------------------------
+
+Persona cards:
+- initial: opacity 0, y=20
+- animate: opacity 1, y=0
+- stagger children
+
+Hover:
+- scale 1.02
+- glow border increase
+
+Verdict:
+- fades in last
+- slight scale animation
+
+Loading:
+- text changes every 1.2 seconds
+
+--------------------------------------------------
+⚙️ BACKEND (/app/api/analyze/route.ts)
+--------------------------------------------------
+
+- accept POST { question }
+- call 4 AI personas in parallel
+- combine responses
+- return JSON response
+- keep it fast and simple
+
+--------------------------------------------------
+🎯 PRODUCT GOAL
+--------------------------------------------------
+
+PRISM must feel like:
+
+"A high-trust decision intelligence system that allows users to evaluate any decision through structured competing AI perspectives and receive a confident, reasoned verdict."
+
+NOT a chatbot.
+NOT a demo.
+A decision-making engine.
+
+--------------------------------------------------
+🚀 BUILD THE FULL WORKING APP
+--------------------------------------------------

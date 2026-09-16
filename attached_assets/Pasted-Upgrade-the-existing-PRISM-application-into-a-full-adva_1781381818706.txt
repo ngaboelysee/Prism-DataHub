@@ -1,0 +1,237 @@
+Upgrade the existing PRISM application into a full advanced AI decision intelligence system.
+
+PRISM already exists. Now implement the following advanced features WITHOUT breaking current functionality.
+
+--------------------------------------------------
+🧠 CORE RULE: DO NOT BREAK EXISTING APP
+--------------------------------------------------
+
+- Keep current PRISM working
+- Extend architecture modularly
+- Do NOT rewrite entire project
+- Add new features cleanly in new files/components
+
+--------------------------------------------------
+🧠 1. CUSTOM PERSONA SYSTEM (NEW FEATURE)
+--------------------------------------------------
+
+Users must be able to create custom AI personas.
+
+Create:
+
+/components/prism/PersonaBuilder.tsx
+
+Features:
+- name input
+- description input
+- rules textarea (most important)
+- sliders:
+  - risk level
+  - creativity level
+  - aggressiveness
+- "Test Persona" button
+- "Save Persona" button
+
+Persona type:
+
+{
+  id: string,
+  name: string,
+  type: "system" | "famous" | "custom",
+  rules: string,
+  riskLevel?: number,
+  creativityLevel?: number,
+  aggressiveness?: number
+}
+
+Store locally (localStorage for MVP).
+
+Backend must accept custom personas in request body without breaking.
+
+--------------------------------------------------
+🌟 2. FAMOUS PERSONA MODE
+--------------------------------------------------
+
+Add predefined simulated decision frameworks:
+
+Create:
+/lib/famousPersonas.ts
+
+Include:
+- Buffett style (risk-averse, long-term value)
+- Elon Musk style (high-risk, innovation-first)
+- Steve Jobs style (product perfection, simplicity focus)
+
+IMPORTANT:
+Do NOT roleplay humans.
+Instead simulate decision-making frameworks inspired by them.
+
+--------------------------------------------------
+⚔️ 3. BATTLE ARENA MODE (MAJOR FEATURE)
+--------------------------------------------------
+
+Create a new UI mode:
+
+/components/prism/BattleArena.tsx
+
+This is a visual debate system between personas.
+
+UI DESIGN (VERY IMPORTANT):
+- dark glassmorphism arena background
+- two opposing persona cards facing each other
+- animated "VS" glowing center
+- tension lines between conflicting arguments
+- executionist acts as neutral planner below
+- analyst acts as judge at bottom
+
+Animation rules:
+- cards slide in from left/right
+- conflict lines pulse based on disagreement intensity
+- final verdict fades in after debate resolves
+
+Backend:
+
+Create /api/battle route:
+
+Input:
+{
+  question: string,
+  personas: Persona[]
+}
+
+Output:
+{
+  arguments: [
+    {
+      persona: string,
+      stance: string,
+      strengths: string[],
+      weaknesses: string[]
+    }
+  ],
+  winner: string,
+  verdict: string
+}
+
+--------------------------------------------------
+🧠 4. UPGRADED AI PROMPTS (VERY IMPORTANT)
+--------------------------------------------------
+
+Improve all AI persona prompts to PhD-level reasoning quality.
+
+RULES FOR ALL PERSONAS:
+- Must reason step-by-step internally
+- Must be structured and analytical
+- Must not be casual or conversational
+- Must behave like expert decision systems, not chatbots
+
+CONTRARIAN:
+- aggressively challenge assumptions
+- identify hidden risks
+- stress failure cases
+
+EXPANSIONIST:
+- maximize upside thinking
+- identify scaling opportunities
+- propose bold strategies
+
+EXECUTIONIST:
+- convert ideas into step-by-step execution plans
+- focus on feasibility
+
+ANALYST:
+- compare tradeoffs objectively
+- summarize best balanced option
+
+IMPORTANT:
+Outputs must be structured, not verbose storytelling.
+
+--------------------------------------------------
+⚙️ 5. BACKEND ARCHITECTURE FIX (CRITICAL)
+--------------------------------------------------
+
+Create a unified engine:
+
+/lib/prismEngine.ts
+
+This must:
+- handle system personas
+- handle famous personas
+- handle custom personas
+- support battle mode + normal mode
+- prevent API duplication
+- ensure parallel AI calls using Promise.all
+
+Rules:
+- NO blocking sequential AI calls
+- ALWAYS parallelize requests
+- MUST return structured JSON only
+
+--------------------------------------------------
+🎨 6. $50M SAAS UI DESIGN SYSTEM (VERY IMPORTANT)
+--------------------------------------------------
+
+Upgrade UI to premium enterprise SaaS level.
+
+STYLE:
+- dark professional background (#070A12)
+- glassmorphism cards (subtle, not heavy)
+- minimal but high contrast typography
+- calm motion design
+
+PERSONA CARDS:
+- Contrarian: red accent glow
+- Expansionist: blue glow
+- Executionist: green glow
+- Analyst: purple glow
+
+HOVER:
+- slight scale (1.02)
+- glow increase
+- smooth easing
+
+SPACING:
+- large whitespace
+- strict grid alignment
+- no clutter
+
+--------------------------------------------------
+🔥 7. BATTLE ARENA UI (INSANE VISUAL DESIGN)
+--------------------------------------------------
+
+Must feel like a strategic AI war room.
+
+Design:
+- dark cinematic background
+- floating glass panels
+- animated VS core in center
+- energy lines between personas
+- subtle particle motion background
+
+Flow:
+1. question enters arena
+2. personas appear one by one
+3. debate phase starts (animated tension)
+4. executionist resolves with plan
+5. analyst delivers final judgment
+6. verdict collapses into single card
+
+This must feel like:
+"AI systems debating inside a control room"
+
+--------------------------------------------------
+🎯 FINAL GOAL
+--------------------------------------------------
+
+PRISM must become:
+
+"A premium AI decision intelligence platform that simulates structured debates between multiple cognitive frameworks, allowing users to evaluate complex decisions with clarity, depth, and confidence."
+
+NOT a chatbot.
+NOT a demo.
+
+A decision-making engine.
+
+--------------------------------------------------
+🚀 IMPLEMENT ALL FEATURES CLEANLY
+--------------------------------------------------

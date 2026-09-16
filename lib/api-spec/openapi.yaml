@@ -1,0 +1,426 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: PRISM AI Decision Intelligence API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: analyses
+    description: Decision analysis operations
+  - name: battle
+    description: Battle arena operations
+  - name: debate
+    description: Factual debate between two opposing positions
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /analyses:
+    post:
+      operationId: analyzeDecision
+      tags: [analyses]
+      summary: Analyze a decision through 4 AI personas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalysisInput"
+      responses:
+        "200":
+          description: Analysis complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Analysis"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      operationId: listAnalyses
+      tags: [analyses]
+      summary: List recent analyses
+      responses:
+        "200":
+          description: List of analyses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AnalysisSummary"
+
+  /analyses/{id}:
+    get:
+      operationId: getAnalysis
+      tags: [analyses]
+      summary: Get a specific analysis by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Analysis found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Analysis"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /debates:
+    get:
+      operationId: listDebates
+      tags: [debate]
+      summary: List past debates
+      responses:
+        "200":
+          description: List of debates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DebateSummary"
+
+  /debates/{id}:
+    get:
+      operationId: getDebate
+      tags: [debate]
+      summary: Get a specific debate by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Debate found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DebateRecord"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /debate:
+    post:
+      operationId: runDebate2
+      tags: [debate]
+      summary: Run a factual debate between two opposing positions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DebateInput"
+      responses:
+        "200":
+          description: Debate complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DebateResult"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /battle:
+    post:
+      operationId: runBattle
+      tags: [battle]
+      summary: Run a Battle Arena debate between personas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BattleInput"
+      responses:
+        "200":
+          description: Battle complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BattleResult"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    CustomPersona:
+      type: object
+      required: [id, name, rules]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [system, famous, custom]
+        rules:
+          type: string
+        riskLevel:
+          type: ["number", "null"]
+        creativityLevel:
+          type: ["number", "null"]
+        aggressiveness:
+          type: ["number", "null"]
+
+    AnalysisInput:
+      type: object
+      required: [question]
+      properties:
+        question:
+          type: string
+          minLength: 5
+        customPersonas:
+          type: ["array", "null"]
+          items:
+            $ref: "#/components/schemas/CustomPersona"
+
+    PersonaPerspectives:
+      type: object
+      required: [contrarian, expansionist, executionist, analyst]
+      properties:
+        contrarian:
+          type: string
+        expansionist:
+          type: string
+        executionist:
+          type: string
+        analyst:
+          type: string
+
+    Analysis:
+      type: object
+      required: [id, question, personas, verdict, confidence, createdAt]
+      properties:
+        id:
+          type: integer
+        question:
+          type: string
+        personas:
+          $ref: "#/components/schemas/PersonaPerspectives"
+        verdict:
+          type: string
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        createdAt:
+          type: string
+          format: date-time
+
+    AnalysisSummary:
+      type: object
+      required: [id, question, verdict, confidence, createdAt]
+      properties:
+        id:
+          type: integer
+        question:
+          type: string
+        verdict:
+          type: string
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        createdAt:
+          type: string
+          format: date-time
+
+    BattleInput:
+      type: object
+      required: [question, personas]
+      properties:
+        question:
+          type: string
+          minLength: 5
+        personas:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomPersona"
+          minItems: 2
+          maxItems: 4
+
+    PersonaArgument:
+      type: object
+      required: [persona, stance, strengths, weaknesses]
+      properties:
+        persona:
+          type: string
+        stance:
+          type: string
+        strengths:
+          type: array
+          items:
+            type: string
+        weaknesses:
+          type: array
+          items:
+            type: string
+
+    BattleResult:
+      type: object
+      required: [arguments, winner, verdict]
+      properties:
+        arguments:
+          type: array
+          items:
+            $ref: "#/components/schemas/PersonaArgument"
+        winner:
+          type: string
+        verdict:
+          type: string
+
+    DebateSummary:
+      type: object
+      required: [id, sideA, sideB, winner, confidence, createdAt]
+      properties:
+        id:
+          type: integer
+        sideA:
+          type: string
+        sideB:
+          type: string
+        topic:
+          type: string
+        winner:
+          type: string
+          enum: [sideA, sideB, tie]
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        createdAt:
+          type: string
+          format: date-time
+
+    DebateRecord:
+      type: object
+      required: [id, sideA, sideB, winner, confidence, reasoning, sideAData, sideBData, createdAt]
+      properties:
+        id:
+          type: integer
+        sideA:
+          type: string
+        sideB:
+          type: string
+        topic:
+          type: string
+        winner:
+          type: string
+          enum: [sideA, sideB, tie]
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        reasoning:
+          type: string
+        sideAData:
+          $ref: "#/components/schemas/DebateSide"
+        sideBData:
+          $ref: "#/components/schemas/DebateSide"
+        createdAt:
+          type: string
+          format: date-time
+
+    DebateInput:
+      type: object
+      required: [sideA, sideB]
+      properties:
+        sideA:
+          type: string
+          minLength: 1
+        sideB:
+          type: string
+          minLength: 1
+        topic:
+          type: string
+          description: Optional context or framing for the debate
+
+    DebateSide:
+      type: object
+      required: [label, argument, keyPoints]
+      properties:
+        label:
+          type: string
+        argument:
+          type: string
+        keyPoints:
+          type: array
+          items:
+            type: string
+
+    DebateResult:
+      type: object
+      required: [sideA, sideB, winner, confidence, reasoning]
+      properties:
+        id:
+          type: integer
+        sideA:
+          $ref: "#/components/schemas/DebateSide"
+        sideB:
+          $ref: "#/components/schemas/DebateSide"
+        winner:
+          type: string
+          enum: [sideA, sideB, tie]
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        reasoning:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
