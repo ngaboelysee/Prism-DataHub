@@ -65,9 +65,12 @@ Verdict, confidence score, and saved history
 ## Repository structure
 
 ```text
+frontend/             React web application and preview
+backend/              Express API and AI orchestration
+
 artifacts/
-├── api-server/       Express API and AI orchestration
-├── prism/            Main PRISM web application
+├── api-server/       Replit deployment adapter for the backend
+├── prism/            Replit deployment adapter for the frontend
 └── mockup-sandbox/   Component preview and design workspace
 
 lib/
@@ -81,13 +84,13 @@ Important application areas:
 
 | Area | Location |
 | --- | --- |
-| AI orchestration | `artifacts/api-server/src/lib/prismEngine.ts` |
-| Decision routes | `artifacts/api-server/src/routes/analyses.ts` |
-| Debate routes | `artifacts/api-server/src/routes/debate.ts` |
+| AI orchestration | `backend/src/lib/prismEngine.ts` |
+| Decision routes | `backend/src/routes/analyses.ts` |
+| Debate routes | `backend/src/routes/debate.ts` |
 | Database schemas | `lib/db/src/schema/` |
 | OpenAPI contract | `lib/api-spec/openapi.yaml` |
-| Frontend pages | `artifacts/prism/src/pages/` |
-| Shared visual language | `artifacts/prism/src/index.css` |
+| Frontend pages | `frontend/src/pages/` |
+| Shared visual language | `frontend/src/index.css` |
 
 ## Local development
 
@@ -128,13 +131,13 @@ pnpm --filter @workspace/db run push
 Start the API server:
 
 ```bash
-pnpm --filter @workspace/api-server run dev
+pnpm --filter @workspace/backend run dev
 ```
 
 Start the web application in a second terminal:
 
 ```bash
-pnpm --filter @workspace/prism run dev
+pnpm --filter @workspace/frontend run dev
 ```
 
 The frontend communicates with the API through the `/api` route.

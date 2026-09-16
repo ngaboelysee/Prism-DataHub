@@ -4,8 +4,8 @@ PRISM is an AI decision intelligence system that analyzes any decision through 4
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/prism run dev` — run the frontend (port assigned by workflow)
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
+- `pnpm --filter @workspace/frontend run dev` — run the frontend (port assigned by workflow)
+- `pnpm --filter @workspace/backend run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -28,9 +28,9 @@ PRISM is an AI decision intelligence system that analyzes any decision through 4
 
 - DB schema: `lib/db/src/schema/analyses.ts`
 - API contract: `lib/api-spec/openapi.yaml`
-- Backend routes: `artifacts/api-server/src/routes/analyses.ts`
-- Frontend pages: `artifacts/prism/src/pages/`
-- Theme/CSS: `artifacts/prism/src/index.css`
+- Backend routes: `backend/src/routes/analyses.ts`
+- Frontend pages: `frontend/src/pages/`
+- Theme/CSS: `frontend/src/index.css`
 
 ## Architecture decisions
 

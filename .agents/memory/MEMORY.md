@@ -1,2 +1,3 @@
 - [PRISM design system](prism-design.md) — light cream #F5F4F0 theme, font-light headings, floating pill nav; matches v0-modern-agentic.vercel.app aesthetic
 - [PRISM backend schema names](prism-zod-names.md) — codegen produces RunBattleResponse (not BattleResult); AnalyzeDecisionBody has customPersonas; always check after openapi.yaml changes
+- [GitHub publishing](github-empty-repo.md) — empty GitHub repositories need a starter Contents API commit before Git Data API tree uploads work
